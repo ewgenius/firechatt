@@ -1,0 +1,17 @@
+@import "../../variables.scss";
+
+.chats-list {
+  float: left;
+  width: $sidebarWidth;
+  height: 100%;
+  .chats-list-container {
+    height: calc(100% - 64px);
+    overflow-y: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .chats {
+    width: 100% !important;
+  }
+}

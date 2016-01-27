@@ -1,16 +1,16 @@
-$sidebarWidth: 360px;
+@import "../../variables.scss";
 
 ::-webkit-scrollbar {
-  width: 12px;
+  width: 8px;
   /* for vertical scrollbars */
-  height: 12px;
+  height: 8px;
   /* for horizontal scrollbars */
 }
  ::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.2);
 }
  ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .shell {
@@ -20,30 +20,4 @@ $sidebarWidth: 360px;
   bottom: 0;
   right: 0;
   height: 100%;
-  .chats {
-    float: left;
-    width: $sidebarWidth;
-    height: 100%;
-    .chats-list {
-      height: calc(100% - 64px);
-      overflow-y: auto;
-    }
-  }
-  .main-container {
-    float: left;
-    height: 100%;
-    width: calc(100% - #{$sidebarWidth});
-    .chat-container {
-      .chat-avatar {
-        width: 44px !important;
-        height: 44px !important;
-      }
-    }
-  }
-}
-
-@media (max-width: 600px) {
-  .chats {
-    width: 100% !important;
-  }
 }

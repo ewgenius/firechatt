@@ -1,5 +1,6 @@
 import React from 'react';
-import ChatContainer from '../ChatContainer/ChatConteiner.jsx';
+import ChatContainer from '../ChatContainer/ChatContainer.jsx';
+import './MainContainer.scss';
 
 export default class MainContainer extends React.Component {
   getContent() {

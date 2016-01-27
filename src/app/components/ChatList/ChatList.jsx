@@ -5,6 +5,7 @@ import List from 'material-ui/lib/lists/list';
 import ListItem from 'material-ui/lib/lists/list-item';
 import {SelectableContainerEnhance} from 'material-ui/lib/hoc/selectable-enhance';
 let SelectableList = SelectableContainerEnhance(List);
+import './ChatList.scss';
 
 export default class ChatList extends React.Component {
   constructor(props) {
@@ -20,9 +21,9 @@ export default class ChatList extends React.Component {
   }
 
   render() {
-    return <div className='chats'>
+    return <div className='chats-list'>
       <AppBar title='chat list'/>
-      <div className='chats-list'>
+      <div className='chats-list-container'>
         <SelectableList valueLink={{
           value: this.state.selectedIndex
         }}>

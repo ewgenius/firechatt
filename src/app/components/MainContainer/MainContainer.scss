@@ -1,0 +1,7 @@
+@import "../../variables.scss";
+
+.main-container {
+  float: left;
+  height: 100%;
+  width: calc(100% - #{$sidebarWidth});
+}

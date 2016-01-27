@@ -1,6 +1,7 @@
 import React from 'react';
 import AppBar from 'material-ui/lib/app-bar';
 import Avatar from 'material-ui/lib/avatar';
+import './ChatContainer.scss';
 
 export default class ChatContainer extends React.Component {
   render() {
