@@ -1,8 +1,11 @@
 import React from 'react';
 import Firebase from 'firebase';
-import ChatList from '../ChatList/ChatList.jsx';
+import ChatsList from '../ChatsList/ChatsList.jsx';
+import UsersList from '../UsersList/UsersList.jsx';
 import MainContainer from '../MainContainer/MainContainer.jsx';
 import './Shell.scss';
+
+/*<ChatsList users={this.props.users} chats={this.props.chats} selectChat={this.selectChat.bind(this)} logout={this.props.logout}/>*/
 
 export default class Shell extends React.Component {
   constructor(props) {
@@ -110,11 +113,16 @@ export default class Shell extends React.Component {
       this.setState({chat: this.state.chats[index]});
     else
       this.setState({chat: null});
-    }
+  }
+
+  createChat(userId) {
+    console.log(id);
+  }
 
   render() {
     return <div className='shell'>
-      <ChatList chats={this.state.chats} selectChat={this.selectChat.bind(this)}/>
+
+      <UsersList users={this.props.users} selectUser={this.createChat.bind(this)}/>
       <MainContainer chat={this.state.chat}/>
     </div>
   }

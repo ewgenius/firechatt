@@ -1,0 +1,17 @@
+@import "../../variables.scss";
+
+.users-list {
+  float: left;
+  width: $sidebarWidth;
+  height: 100%;
+  .users-list-container {
+    height: calc(100% - 64px);
+    overflow-y: auto;
+  }
+}
+
+@media (max-width: 600px) {
+  .users {
+    width: 100% !important;
+  }
+}
