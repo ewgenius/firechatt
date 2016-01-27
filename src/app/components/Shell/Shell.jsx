@@ -3,6 +3,7 @@ import Firebase from 'firebase';
 import AppBar from 'material-ui/lib/app-bar';
 import IconButton from 'material-ui/lib/icon-button';
 import NavigationMenu from 'material-ui/lib/svg-icons/navigation/menu';
+import NavigationClose from 'material-ui/lib/svg-icons/navigation/close';
 import LeftNav from 'material-ui/lib/left-nav';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 
@@ -19,12 +20,15 @@ class Chats extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedIndex: 1
+      selectedIndex: 0
     };
   }
 
-  handleUpdateSelectedIndex(e, index) {
-    this.setState({selectedIndex: index});
+  selectChat(index) {
+    this.setState({
+      selectedIndex: index
+    });
+    this.props.selectChat(index);
   }
 
   render() {
@@ -32,8 +36,7 @@ class Chats extends React.Component {
       <AppBar title='chat list'/>
       <div className='chats-list'>
         <SelectableList valueLink={{
-          value: this.state.selectedIndex,
-          requestChange: this.handleUpdateSelectedIndex
+          value: this.state.selectedIndex
         }}>
           {this.props.chats.map(chat =>
             <ListItem
@@ -41,6 +44,7 @@ class Chats extends React.Component {
               key={chat.id}
               primaryText={`${chat.id}: ${chat.name}`}
               secondaryText={chat.message}
+              onClick={() => {this.selectChat(chat.id)}}
               leftAvatar={
                 <Avatar src={`https://robohash.org/${chat.id}.png?bgset=any`}/>
               }/>)
@@ -54,7 +58,24 @@ class Chats extends React.Component {
 class ChatContainer extends React.Component {
   render() {
     return <div className='chat-container'>
-      container
+      <AppBar
+        title={this.props.chat.name}
+        iconElementLeft={
+          <Avatar className="chat-avatar" src={`https://robohash.org/${this.props.chat.id}.png?bgset=any`}/>
+        }/>
+    </div>
+  }
+}
+
+class MainContainer extends React.Component {
+  getContent() {
+    if (this.props.chat)
+      return <ChatContainer chat={this.props.chat}/>
+  }
+
+  render() {
+    return <div className='main-container'>
+      {this.getContent()}
     </div>
   }
 }
@@ -64,6 +85,7 @@ export default class Shell extends React.Component {
     super(props);
     this.firebase = new Firebase('https:firechatt.firebaseio.com/items/');
     this.state = {
+      chat: null,
       chats: [
         {
           id: 1,
@@ -154,14 +176,17 @@ export default class Shell extends React.Component {
     };
   }
 
-  chatSelect(chat) {
-    console.log(chat);
-  }
+  selectChat(id) {
+    if (id && this.state.chats[id])
+      this.setState({chat: this.state.chats[id]});
+    else
+      this.setState({chat: null});
+    }
 
   render() {
     return <div className='shell'>
-      <Chats chats={this.state.chats} chatSelect={this.chatSelect.bind(this)}/>
-      <ChatContainer/>
+      <Chats chats={this.state.chats} selectChat={this.selectChat.bind(this)}/>
+      <MainContainer chat={this.state.chat}/>
     </div>
   }
 }
