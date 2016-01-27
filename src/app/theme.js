@@ -19,7 +19,7 @@ export default {
     textColor: Colors.darkBlack,
     alternateTextColor: Colors.white,
 
-    canvasColor: Colors.black,
+    canvasColor: Colors.white,
 
     borderColor: Colors.grey300,
 
