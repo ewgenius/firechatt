@@ -12,6 +12,11 @@ export default class Shell extends React.Component {
       chat: null,
       chats: [
         {
+          id: 0,
+          name: 'Test Testovich',
+          message: 'test message'
+        },
+        {
           id: 1,
           name: 'Test Testovich',
           message: 'test message'
@@ -101,7 +106,7 @@ export default class Shell extends React.Component {
   }
 
   selectChat(id) {
-    if (id && this.state.chats[id])
+    if (id !== null && this.state.chats[id])
       this.setState({chat: this.state.chats[id]});
     else
       this.setState({chat: null});

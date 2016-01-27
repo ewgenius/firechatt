@@ -10,7 +10,7 @@ export default class ChatList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectedIndex: 0
+      selectedIndex: -1
     };
   }
 
