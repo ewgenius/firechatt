@@ -32,3 +32,9 @@
     height: 100%;
   }
 }
+
+@media (max-width: 600px) {
+  .chats {
+    width: 100% !important;
+  }
+}
