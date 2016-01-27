@@ -49,7 +49,7 @@ export default class ChatsList extends React.Component {
         <SelectableList valueLink={{
           value: this.state.selectedIndex
         }}>
-          {this.getChatsList(this.props.users)}
+          {this.getChatsList(this.props.chats)}
         </SelectableList>
       </div>
     </div>

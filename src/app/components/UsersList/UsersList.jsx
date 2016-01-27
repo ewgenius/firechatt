@@ -42,14 +42,11 @@ export default class UsersList extends React.Component {
 
   render() {
     return <div className='users-list'>
-      <AppBar title='users list'/>
-      <div className='users-list-container'>
-        <SelectableList valueLink={{
-          value: this.state.selectedIndex
-        }}>
-          {this.getUsersList(this.props.users)}
-        </SelectableList>
-      </div>
+      <SelectableList valueLink={{
+        value: this.state.selectedIndex
+      }}>
+        {this.getUsersList(this.props.users)}
+      </SelectableList>
     </div>
   }
 }

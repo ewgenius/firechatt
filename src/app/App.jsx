@@ -10,6 +10,8 @@ export default class App extends React.Component {
     this.firebase = new Firebase('https://firechatt.firebaseio.com/items/');
     this.self = null;
     this.users = this.firebase.child('users');
+    this.allchats = this.firebase.child('chats');
+    this.chats = null;
     this.state = {
       user: null,
       users: null,
@@ -36,21 +38,22 @@ export default class App extends React.Component {
 
         this.self = this.users.child(user.id);
         this.self.on('value', snapshot => {
-          let chats = null;
           // if there is no such id in users, create one
           if (snapshot.val() === null) {
             this.self.set(user.cachedUserProfile);
-            chats = this.self.child('chats');
+            this.chats = this.self.child('chats');
             chats.set({});
           } else {
             let user = snapshot.val();
-            chats = this.self.child('chats');
+            this.chats = this.self.child('chats');
           }
 
-          chats.on('value', snapshot => {
+          this.chats.on('value', snapshot => {
             let chats = snapshot.val();
-            if(chats) this.setState({chats: chats});
-          });
+            if (chats)
+              this.setState({chats: chats});
+            }
+          );
         });
 
         // get all users
@@ -62,20 +65,46 @@ export default class App extends React.Component {
   }
 
   logout() {
-    this.setState({
-      user: null,
-      chats: null
-    });
+    this.setState({user: null, chats: null});
   }
+
+  createChat(userId) {
+    if (this.chats) {
+      var chatId = `${this.state.user.id}_${userId}`;
+      if (this.state.chats[chatId])
+        this.openChat();
+      else
+        this.users.child(userId).on('value', snapshot => {
+          let user = snapshot.val();
+          if (user) {
+            this.allchats.child(chatId).set({
+              user1: {
+                id: this.state.user.cachedUserProfile.id,
+                name: this.state.user.cachedUserProfile.name,
+                picture: this.state.user.cachedUserProfile.picture
+              },
+              user2: {
+                id: user.id,
+                name: user.name,
+                picture: user.picture
+              }
+            });
+            this.chats.child(chatId).set({chatId: chatId});
+          }
+        });
+      }
+    }
+
+  openChat(chatId) {
+    
+  }
+
+  deleteChat() {}
 
   render() {
     if (this.state.user)
       return <div>
-        <Shell
-          user={this.state.user}
-          users={this.state.users}
-          chats={this.state.chats}
-          onLogout={this.logout.bind(this)}/>
+        <Shell user={this.state.user} users={this.state.users} chats={this.state.chats} createChat={this.createChat.bind(this)} deleteChat={this.deleteChat.bind(this)} onLogout={this.logout.bind(this)}/>
       </div>
     else
       return <div>
