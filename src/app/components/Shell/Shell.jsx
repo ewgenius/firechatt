@@ -105,9 +105,9 @@ export default class Shell extends React.Component {
     };
   }
 
-  selectChat(id) {
-    if (id !== null && this.state.chats[id])
-      this.setState({chat: this.state.chats[id]});
+  selectChat(index) {
+    if (index !== null && this.state.chats[index])
+      this.setState({chat: this.state.chats[index]});
     else
       this.setState({chat: null});
     }

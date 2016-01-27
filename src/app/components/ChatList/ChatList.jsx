@@ -26,13 +26,13 @@ export default class ChatList extends React.Component {
         <SelectableList valueLink={{
           value: this.state.selectedIndex
         }}>
-          {this.props.chats.map(chat =>
+          {this.props.chats.map((chat, i) =>
             <ListItem
-              value={chat.id}
-              key={chat.id}
+              value={i}
+              key={i}
               primaryText={`${chat.id}: ${chat.name}`}
               secondaryText={chat.message}
-              onClick={() => {this.selectChat(chat.id)}}
+              onClick={() => {this.selectChat(i)}}
               leftAvatar={
                 <Avatar src={`https://robohash.org/${chat.id}.png?bgset=any`}/>
               }/>)
