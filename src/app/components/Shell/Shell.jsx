@@ -11,7 +11,8 @@ export default class Shell extends React.Component {
     super(props);
     this.state = {
       chats: {},
-      users: {}
+      users: {},
+      chat: null
     };
 
     api.getUsers().then(users => this.setState({users: users}));
@@ -30,14 +31,16 @@ export default class Shell extends React.Component {
     });
 
     api.subscribeChatRemoved(this.props.user.id, chat => {
-      console.log(chat);
       this.state.chats[chat.chatId] = undefined;
       this.setState({chats: this.state.chats});
     });
   }
 
   openChat(userId) {
-    api.createChat(this.props.user.id, userId).then(chat => {});
+    api.createChat(this.props.user.id, userId)
+      .then(chat => this.setState({
+        chat: chat
+      }));
   }
 
   render() {
@@ -54,15 +57,16 @@ export default class Shell extends React.Component {
     </div>
 */
     return <div className='shell'>
-      users:<br/>
+      <ChatsList
+        user={this.props.user}
+        chats={this.state.chats}
+        selectChat={this.openChat.bind(this)} />
+
+      <MainContainer chat={this.state.chat}/>
+
       {Object.keys(this.state.users).map((key, i) => <p key={i}>
         {this.state.users[key].name}
         <button onClick={(() => this.openChat(this.state.users[key].id))}>start chat</button>
-      </p>)}
-
-      chats:<br/>
-      {Object.keys(this.state.chats).map((key, i) => <p key={i}>
-        {this.state.chats[key].opponent.name}
       </p>)}
     </div>
   }

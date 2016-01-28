@@ -19,9 +19,9 @@ export default class ChatsList extends React.Component {
     };
   }
 
-  selectChat(index) {
+  selectChat(index, chatId) {
     this.setState({selectedIndex: index});
-    this.props.selectChat(index);
+    this.props.selectChat(chatId);
   }
 
   getChatsList(chats) {
@@ -29,20 +29,19 @@ export default class ChatsList extends React.Component {
       return Object.keys(chats).map((key, i) => {
         var chat = chats[key];
         return <ListItem
-          value={i}
+          value={i + 1}
           key={i}
-          primaryText={chat.user1.name}
-          secondaryText={chat.message}
-          onClick={() => {this.selectChat(i)}}
+          primaryText={chat.opponent.name}
+          secondaryText={''}
+          onClick={() => {this.selectChat(i + 1, chat.opponent.id)}}
           leftAvatar={
-            <Avatar src={chat.user1.picture}/>
+            <Avatar src={chat.opponent.picture}/>
           }/>
       })
     }
   }
 
   render() {
-    console.log(this.props.users);
     return <div className='chats-list'>
       <AppBar title='chat list'/>
       <div className='chats-list-container'>
