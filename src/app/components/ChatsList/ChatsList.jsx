@@ -31,11 +31,11 @@ export default class ChatsList extends React.Component {
         return <ListItem
           value={i}
           key={i}
-          primaryText={chat.name}
+          primaryText={chat.user1.name}
           secondaryText={chat.message}
           onClick={() => {this.selectChat(i)}}
           leftAvatar={
-            <Avatar src={chat.picture}/>
+            <Avatar src={chat.user1.picture}/>
           }/>
       })
     }

@@ -22,12 +22,20 @@ export default class Shell extends React.Component {
       this.setState({chat: null});
   }
 
+  createChat(id) {
+
+  }
+
   render() {
     return <div className='shell'>
-
+      <ChatsList
+        user={this.props.user}
+        chats={this.props.chats}
+        selectChat={this.selectChat.bind(this)}
+        logout={this.props.logout}/>
       <UsersList
         users={this.props.users}
-        selectUser={this.props.createChat.bind(this)}/>
+        selectUser={this.createChat.bind(this)}/>
       <MainContainer chat={null}/>
     </div>
   }
