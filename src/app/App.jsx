@@ -8,14 +8,8 @@ export default class App extends React.Component {
   constructor() {
     super();
     this.firebase = new Firebase('https://firechatt.firebaseio.com/items/');
-    this.self = null;
-    this.users = this.firebase.child('users');
-    this.allchats = this.firebase.child('chats');
-    this.chats = null;
     this.state = {
-      user: null,
-      users: null,
-      chats: null
+      user: null
     }
   }
 
@@ -95,16 +89,10 @@ export default class App extends React.Component {
       }
     }
 
-  openChat(chatId) {
-    
-  }
-
-  deleteChat() {}
-
   render() {
     if (this.state.user)
       return <div>
-        <Shell user={this.state.user} users={this.state.users} chats={this.state.chats} createChat={this.createChat.bind(this)} deleteChat={this.deleteChat.bind(this)} onLogout={this.logout.bind(this)}/>
+        <Shell firebase={this.firebase} user={this.state.user} onLogout={this.logout.bind(this)}/>
       </div>
     else
       return <div>
@@ -112,7 +100,6 @@ export default class App extends React.Component {
       </div>
   }
 }
-
 App.childContextTypes = {
   muiTheme: React.PropTypes.object
-};
+}
