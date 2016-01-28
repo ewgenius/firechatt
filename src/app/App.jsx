@@ -19,8 +19,7 @@ const styles = {
     right: 0,
     left: 0,
     width: '100%',
-    height: '100%',
-    background: '#ff4444'
+    height: '100%'
   },
   loginCard: {
     width: '320px',
@@ -35,7 +34,6 @@ const styles = {
 export default class App extends React.Component {
   constructor() {
     super();
-    this.firebase = new Firebase('https://firechatt.firebaseio.com/items/');
     this.state = {
       user: null
     }
@@ -63,7 +61,7 @@ export default class App extends React.Component {
 
   render() {
     if (this.state.user)
-      return <Shell firebase={this.firebase} user={this.state.user}/>
+      return <Shell user={this.state.user}/>
     else
       return <div className='login' style={styles.login}>
         <Card style={styles.loginCard}>

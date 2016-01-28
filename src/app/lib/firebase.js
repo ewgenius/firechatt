@@ -1,5 +1,6 @@
 const firebase = new Firebase('https://firechatt.firebaseio.com/items/');
 const usersRef = firebase.child('users');
+const chatsRef = firebase.child('chats');
 
 function promiseValue(snapshot) {
   return new Promise((resolve, reject) => {
@@ -21,17 +22,81 @@ const api = {
     });
   },
 
-  getUser: function(id) {
+  getUser: function(userId) {
     return new Promise((resolve, reject) => {
-      usersRef.child(id).on('value', snapshot =>
+      usersRef.child(userId).on('value', snapshot =>
         promiseValue(snapshot)
         .then(value => resolve(value))
         .catch(err => reject(err)));
     });
   },
 
-  setUser: function(id, user) {
-    usersRef.child(id).set(user);
+  setUser: function(userId, user) {
+    usersRef.child(userId).set(user);
+  },
+
+  getUsers: function() {
+    return new Promise((resolve, reject) => {
+      usersRef.on('value', snapshot =>
+        promiseValue(snapshot)
+        .then(value => resolve(value))
+        .catch(err => reject(err)));
+    });
+  },
+
+  createChat: function(userId1, userId2) {
+    return new Promise((resolve, reject) => {
+      this.getChat(`${userId1}_${userId2}`)
+        .then(chat => resolve(chat))
+        .catch(() => this.getChat(`${userId2}_${userId1}`)
+          .then(chat => resolve(chat))
+          .catch(() => {
+            let chatId = `${userId1}_${userId2}`;
+            let chat = {
+              user1: userId1,
+              user2: userId2
+            };
+            chatsRef.child(chatId).set(chat);
+            usersRef.child(userId1).child('chats').child(chatId).set({
+              user: userId2
+            });
+            usersRef.child(userId2).child('chats').child(chatId).set({
+              user: userId1
+            });
+            resolve(chat);
+          }));
+    });
+  },
+
+  getChats: function(userId) {
+    return new Promise((resolve, reject) => {
+      usersRef.child(userId).child('chats').on('value', snapshot =>
+        promiseValue(snapshot)
+        .then(value => resolve(value))
+        .catch(err => reject(err)));
+    }).then(chats => Promise.all(Object.keys(chats).map(id => this.getChat(id).then(chat => {
+      return {
+        id: id,
+        chat: chat
+      }
+    }))));
+  },
+
+  getChat: function(chatId) {
+    return new Promise((resolve, reject) => {
+      chatsRef.child(chatId).on('value', snapshot =>
+        promiseValue(snapshot)
+        .then(value => resolve(value))
+        .catch(err => reject(err)));
+    });
+  },
+
+  subscribeUsers: function() {
+
+  },
+
+  subscribeChats: function(userId) {
+    usersRef.child(userId).child('chats').on()
   }
 };
 
