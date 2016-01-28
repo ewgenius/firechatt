@@ -58,10 +58,12 @@ const api = {
             };
             chatsRef.child(chatId).set(chat);
             usersRef.child(userId1).child('chats').child(chatId).set({
-              user: userId2
+              user: userId2,
+              chatId: chatId
             });
             usersRef.child(userId2).child('chats').child(chatId).set({
-              user: userId1
+              user: userId1,
+              chatId: chatId
             });
             resolve(chat);
           }));
@@ -74,36 +76,33 @@ const api = {
         promiseValue(snapshot)
         .then(value => resolve(value))
         .catch(err => reject(err)));
-    }).then(chats => Promise.all(Object.keys(chats).map(id => this.getChat(id)
-      .then(chat => {
-        return {
-          id: id,
-          chat: chat
-        };
-      })
-      .then(chat => {
-        let opponentId = userId;
-        if (chat.chat.user1 !== userId)
-          opponentId = chat.chat.user1;
-        else if (chat.chat.user2 !== userId)
-          opponentId = chat.chat.user2;
-        return this.getUser(opponentId).then(user => {
-          return {
-            id: chat.id,
-            chat: chat.chat,
-            opponent: user
-          };
-        });
-      })
-    )));
+    }).then(chats => Promise.all(Object.keys(chats).map(id => this.getChat(id, userId))));
   },
 
-  getChat: function(chatId) {
+  getChat: function(chatId, userId) {
     return new Promise((resolve, reject) => {
       chatsRef.child(chatId).on('value', snapshot =>
         promiseValue(snapshot)
         .then(value => resolve(value))
         .catch(err => reject(err)));
+    }).then(chat => {
+      return {
+        id: chatId,
+        chat: chat
+      };
+    }).then(chat => {
+      let opponentId = userId;
+      if (chat.chat.user1 !== userId)
+        opponentId = chat.chat.user1;
+      else if (chat.chat.user2 !== userId)
+        opponentId = chat.chat.user2;
+      return this.getUser(opponentId).then(user => {
+        return {
+          id: chat.id,
+          chat: chat.chat,
+          opponent: user
+        };
+      });
     });
   },
 
@@ -111,8 +110,16 @@ const api = {
 
   },
 
-  subscribeChats: function(userId) {
-    usersRef.child(userId).child('chats').on()
+  subscribeChatAdded: function(userId, cb) {
+    usersRef.child(userId).child('chats').on('child_added',
+      snapshot => promiseValue(snapshot)
+      .then(chat => this.getChat(chat.chatId, userId)
+        .then(chat => cb(chat))));
+  },
+
+  subscribeChatRemoved: function(userId, cb) {
+    usersRef.child(userId).child('chats').on('child_removed',
+      snapshot => promiseValue(snapshot));
   }
 };
 

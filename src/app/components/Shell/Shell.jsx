@@ -23,12 +23,21 @@ export default class Shell extends React.Component {
         this.setState({chats: collection});
       }
     });
+
+    api.subscribeChatAdded(this.props.user.id, chat => {
+      this.state.chats[chat.id] = chat;
+      this.setState({chats: this.state.chats});
+    });
+
+    api.subscribeChatRemoved(this.props.user.id, chat => {
+      console.log(chat);
+      this.state.chats[chat.chatId] = undefined;
+      this.setState({chats: this.state.chats});
+    });
   }
 
   openChat(userId) {
-    api.createChat(this.props.user.id, userId).then(chat => {
-      console.log(chat);
-    });
+    api.createChat(this.props.user.id, userId).then(chat => {});
   }
 
   render() {
