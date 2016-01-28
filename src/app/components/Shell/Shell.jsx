@@ -38,36 +38,24 @@ export default class Shell extends React.Component {
 
   openChat(userId) {
     api.createChat(this.props.user.id, userId)
-      .then(chat => this.setState({
-        chat: chat
-      }));
+      .then(chat => {
+        this.setState({
+          chat: chat
+        });
+    });
   }
 
   render() {
-    /*var old = <div className='shell'>
-      <ChatsList
-        user={this.props.user}
-        chats={this.props.chats}
-        selectChat={this.selectChat.bind(this)}
-        logout={this.props.logout}/>
-      <UsersList
-        users={this.props.users}
-        selectUser={this.createChat.bind(this)}/>
-      <MainContainer chat={null}/>
-    </div>
-*/
     return <div className='shell'>
       <ChatsList
         user={this.props.user}
         chats={this.state.chats}
         selectChat={this.openChat.bind(this)} />
 
-      <MainContainer chat={this.state.chat}/>
-
-      {Object.keys(this.state.users).map((key, i) => <p key={i}>
-        {this.state.users[key].name}
-        <button onClick={(() => this.openChat(this.state.users[key].id))}>start chat</button>
-      </p>)}
+      <MainContainer
+        chat={this.state.chat}
+        users={this.state.users}
+        openChat={this.openChat.bind(this)} />
     </div>
   }
 }

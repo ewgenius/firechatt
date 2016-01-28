@@ -6,6 +6,11 @@ export default class MainContainer extends React.Component {
   getContent() {
     if (this.props.chat)
       return <ChatContainer chat={this.props.chat}/>
+    else
+      return Object.keys(this.props.users).map((key, i) => <p key={i}>
+        {this.props.users[key].name}
+        <button onClick={(() => this.props.openChat(this.props.users[key].id))}>start chat</button>
+      </p>);
   }
 
   render() {

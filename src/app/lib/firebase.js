@@ -46,12 +46,12 @@ const api = {
 
   createChat: function(userId1, userId2) {
     return new Promise((resolve, reject) => {
-      this.getChat(`${userId1}_${userId2}`)
+      this.getChat(`${userId1}-${userId2}`, userId1)
         .then(chat => resolve(chat))
-        .catch(() => this.getChat(`${userId2}_${userId1}`)
+        .catch(() => this.getChat(`${userId2}-${userId1}`, userId1)
           .then(chat => resolve(chat))
           .catch(() => {
-            let chatId = `${userId1}_${userId2}`;
+            let chatId = `${userId1}-${userId2}`;
             let chat = {
               user1: userId1,
               user2: userId2
@@ -65,7 +65,7 @@ const api = {
               user: userId1,
               chatId: chatId
             });
-            resolve(chat);
+            this.getChat(chatId, userId1).then(chat => resolve(chat));
           }));
     });
   },
@@ -92,6 +92,7 @@ const api = {
       };
     }).then(chat => {
       let opponentId = userId;
+      console.log(chat);
       if (chat.chat.user1 !== userId)
         opponentId = chat.chat.user1;
       else if (chat.chat.user2 !== userId)

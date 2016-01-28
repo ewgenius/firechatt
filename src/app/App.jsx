@@ -49,7 +49,7 @@ export default class App extends React.Component {
       api.getUser(profile.id).then(user => {
         this.setState({user: user});
       }).catch(err => {
-        api.setUser(profile.id, profile);
+        api.setUser(profile.id, profile.cachedUserProfile);
         this.setState({user: profile});
       });
     });
