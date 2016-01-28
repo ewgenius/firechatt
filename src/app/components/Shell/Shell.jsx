@@ -12,6 +12,7 @@ export default class Shell extends React.Component {
     this.state = {
       chats: {},
       users: {},
+      messages: [],
       chat: null
     };
 
@@ -37,11 +38,28 @@ export default class Shell extends React.Component {
   }
 
   openChat(userId) {
-    api.createChat(this.props.user.id, userId)
-      .then(chat => {
+    if (this.state.chat)
+      api.unsubscribeChat(this.state.chat.id);
+
+    this.setState({
+      messages: []
+    });
+    api.createChat(this.props.user.id, userId).then(chat => {
+      this.setState({
+        chat: chat
+      });
+      return chat;
+    }).then(chat => {
+      api.getMessages(chat.id).then(messages => {
         this.setState({
-          chat: chat
+          messages: Object.keys(messages).map(k => messages[k])
         });
+      }).catch(e => {});
+      api.subscribeChat(chat.id, message => {
+        this.setState({
+          messages: this.state.messages.concat(message)
+        });
+      });
     });
   }
 
@@ -59,8 +77,10 @@ export default class Shell extends React.Component {
         selectChat={this.openChat.bind(this)} />
 
       <MainContainer
+        user={this.props.user}
         chat={this.state.chat}
         users={this.state.users}
+        messages={this.state.messages}
         openChat={this.openChat.bind(this)}
         closeChat={this.closeChat.bind(this)} />
     </div>

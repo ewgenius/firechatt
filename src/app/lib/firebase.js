@@ -92,7 +92,6 @@ const api = {
       };
     }).then(chat => {
       let opponentId = userId;
-      console.log(chat);
       if (chat.chat.user1 !== userId)
         opponentId = chat.chat.user1;
       else if (chat.chat.user2 !== userId)
@@ -130,6 +129,26 @@ const api = {
 
   unsubscribeChat: function(chatId) {
     chatsRef.child(chatId).child('messages').off('child_added');
+  },
+
+  getMessages: function(chatId) {
+    return new Promise((resolve, reject) => {
+      chatsRef
+        .child(chatId)
+        .child('messages')
+        .limitToLast(20)
+        .on('value', snapshot => promiseValue(snapshot)
+          .then(messages => resolve(messages))
+          .catch(err => reject(err)));
+    });
+  },
+
+  sendMessage: function(chatId, userId, message) {
+    return chatsRef.child(chatId).child('messages').push({
+      user: userId,
+      created: Date.now(),
+      text: message
+    });
   }
 };
 

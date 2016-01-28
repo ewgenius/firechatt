@@ -1,16 +1,50 @@
 .chat-container {
+  height: 100%;
+  font-family: 'Roboto', sans-serif;
+
   .chat-avatar {
     width: 44px !important;
     height: 44px !important;
   }
 
-  .messages-pane {
-    height: calc(100% - 64px);
+  .messages-container {
+    height: calc(100% - 128px);
     overflow-y: auto;
-    background-color: #444;
+    background-color: #eee;
+
+    .message {
+      clear: both;
+      background-color: #fff;
+      padding: 8px;
+      border-radius: 4px;
+      margin: 4px 8px;
+      &.left {
+        float: left;
+      }
+      &.right {
+        float: right;
+      }
+    }
   }
 
   .message-control {
-    background-color: #444;
+    height: 64px;
+    width: 100%;
+    textarea {
+      float: left;
+      outline: none;
+      border: none;
+      padding: 16px;
+      margin: 6px 0;
+      resize: none;
+      font-size: 18px;
+      font-family: 'Roboto';
+      height: 21px;
+      width: calc(100% - 64px - 32px);
+    }
+
+    button {
+      margin :8px;
+    }
   }
 }

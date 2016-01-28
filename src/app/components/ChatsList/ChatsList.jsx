@@ -9,6 +9,7 @@ import List from 'material-ui/lib/lists/list';
 import ListItem from 'material-ui/lib/lists/list-item';
 import {SelectableContainerEnhance} from 'material-ui/lib/hoc/selectable-enhance';
 let SelectableList = SelectableContainerEnhance(List);
+import api from '../../lib/firebase';
 import './ChatsList.scss';
 
 export default class ChatsList extends React.Component {

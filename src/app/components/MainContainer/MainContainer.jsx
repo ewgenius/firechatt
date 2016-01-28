@@ -5,7 +5,11 @@ import './MainContainer.scss';
 export default class MainContainer extends React.Component {
   getContent() {
     if (this.props.chat)
-      return <ChatContainer chat={this.props.chat} closeChat={this.props.closeChat}/>
+      return <ChatContainer
+        user={this.props.user}
+        chat={this.props.chat}
+        messages={this.props.messages}
+        closeChat={this.props.closeChat}/>
     else
       return Object.keys(this.props.users).map((key, i) => <p key={i}>
         {this.props.users[key].name}
