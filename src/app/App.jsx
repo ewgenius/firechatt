@@ -2,7 +2,35 @@ import React from 'react';
 import MyTheme from './theme';
 import ThemeManager from 'material-ui/lib/styles/theme-manager';
 import ThemeDecorator from 'material-ui/lib/styles/theme-decorator';
+import Card from 'material-ui/lib/card/card';
+import CardActions from 'material-ui/lib/card/card-actions';
+import CardHeader from 'material-ui/lib/card/card-header';
+import CardMedia from 'material-ui/lib/card/card-media';
+import CardTitle from 'material-ui/lib/card/card-title';
+import RaisedButton from 'material-ui/lib/raised-button';
 import Shell from './components/Shell/Shell.jsx';
+import api from './lib/firebase.js';
+
+const styles = {
+  login: {
+    position: 'fixed',
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 0,
+    width: '100%',
+    height: '100%',
+    background: '#ff4444'
+  },
+  loginCard: {
+    width: '320px',
+    margin: '64px auto 0',
+    padding: '16px'
+  },
+  loginButton: {
+    margin: '0 auto'
+  }
+}
 
 export default class App extends React.Component {
   constructor() {
@@ -18,85 +46,30 @@ export default class App extends React.Component {
   }
 
   login() {
-    return new Promise((resolve, reject) => {
-      this.firebase.authWithOAuthPopup('google', function(error, authData) {
-        if (error)
-          reject(error);
-        else
-          resolve(authData);
-        }
-      ).then(auth => {
-        var user = auth.google;
-        //localStorage.setItem('user', user.id);
+    api.authorize().then(auth => {
+      var profile = auth.google;
+      api.getUser(profile.id).then(user => {
         this.setState({user: user});
-
-        this.self = this.users.child(user.id);
-        this.self.on('value', snapshot => {
-          // if there is no such id in users, create one
-          if (snapshot.val() === null) {
-            this.self.set(user.cachedUserProfile);
-            this.chats = this.self.child('chats');
-            chats.set({});
-          } else {
-            let user = snapshot.val();
-            this.chats = this.self.child('chats');
-          }
-
-          this.chats.on('value', snapshot => {
-            let chats = snapshot.val();
-            if (chats)
-              this.setState({chats: chats});
-            }
-          );
-        });
-
-        // get all users
-        this.users.on('value', snapshot => {
-          this.setState({users: snapshot.val()});
-        });
+      }).catch(err => {
+        api.setUser(profile.id, profile);
+        this.setState({user: profile});
       });
     });
   }
 
   logout() {
-    this.setState({user: null, chats: null});
+    this.setState({user: null});
   }
-
-  createChat(userId) {
-    if (this.chats) {
-      var chatId = `${this.state.user.id}_${userId}`;
-      if (this.state.chats[chatId])
-        this.openChat();
-      else
-        this.users.child(userId).on('value', snapshot => {
-          let user = snapshot.val();
-          if (user) {
-            this.allchats.child(chatId).set({
-              user1: {
-                id: this.state.user.cachedUserProfile.id,
-                name: this.state.user.cachedUserProfile.name,
-                picture: this.state.user.cachedUserProfile.picture
-              },
-              user2: {
-                id: user.id,
-                name: user.name,
-                picture: user.picture
-              }
-            });
-            this.chats.child(chatId).set({chatId: chatId});
-          }
-        });
-      }
-    }
 
   render() {
     if (this.state.user)
-      return <div>
-        <Shell firebase={this.firebase} user={this.state.user} onLogout={this.logout.bind(this)}/>
-      </div>
+      return <Shell firebase={this.firebase} user={this.state.user}/>
     else
-      return <div>
-        <button onClick={this.login.bind(this)}>authorize</button>
+      return <div className='login' style={styles.login}>
+        <Card style={styles.loginCard}>
+          <CardHeader title={<b>Welcome in Firechatt!</b>}/>
+          <RaisedButton style={styles.loginButton} label="LOGIN" onClick={this.login.bind(this)}/>
+        </Card>
       </div>
   }
 }
