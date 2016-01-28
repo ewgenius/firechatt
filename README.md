@@ -13,6 +13,8 @@ Live demo at [https://firechatt.firebaseapp.com](https://firechatt.firebaseapp.c
 - [ ] messages api
 - [ ] chat closing logic and events
 - [ ] save profile in localstorage, don't reuire login each time
+- [ ] responsive design for mobile
+- [ ] favicon, app icons
 
 
 ## License
