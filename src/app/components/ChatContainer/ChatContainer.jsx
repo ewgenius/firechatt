@@ -37,6 +37,11 @@ export default class ChatContainer extends React.Component {
     }
   }
 
+  onKeyPress(event) {
+    if(event.charCode === 13)
+      this.sendMessage();
+  }
+
   render() {
     return <div className='chat-container'>
       <AppBar title={this.props.chat.opponent.name} iconElementLeft={<Avatar className="chat-avatar" src={this.props.chat.opponent.picture}/>} iconElementRight={<IconButton onClick={() => this.props.closeChat(this.props.chat.id)}><CloseIcon/></IconButton>}/>
@@ -47,7 +52,10 @@ export default class ChatContainer extends React.Component {
         </div>
       </div>
       <div className="message-control">
-        <textarea value={this.state.message} onChange={this.onChange.bind(this)}/>
+        <input
+          value={this.state.message}
+          onKeyPress={this.onKeyPress.bind(this)}
+          onChange={this.onChange.bind(this)}/>
         <IconButton onClick={this.sendMessage.bind(this)}>
           <SendIcon/>
         </IconButton>
