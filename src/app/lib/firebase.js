@@ -120,7 +120,16 @@ const api = {
 
   subscribeChatRemoved: function(userId, cb) {
     usersRef.child(userId).child('chats').on('child_removed',
-      snapshot => promiseValue(snapshot));
+      snapshot => promiseValue(snapshot).then(chat => cb(chat)));
+  },
+
+  subscribeChat: function(chatId, cb) {
+    chatsRef.child(chatId).child('messages').on('child_added',
+      snapshot => promiseValue(snapshot).then(message => cb(message)));
+  },
+
+  unsubscribeChat: function(chatId) {
+    chatsRef.child(chatId).child('messages').off('child_added');
   }
 };
 
