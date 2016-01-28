@@ -3,4 +3,14 @@
     width: 44px !important;
     height: 44px !important;
   }
+
+  .messages-pane {
+    height: calc(100% - 64px);
+    overflow-y: auto;
+    background-color: #444;
+  }
+
+  .message-control {
+    background-color: #444;
+  }
 }

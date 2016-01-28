@@ -3,7 +3,7 @@ import AppBar from 'material-ui/lib/app-bar';
 import Avatar from 'material-ui/lib/avatar';
 import IconButton from 'material-ui/lib/icon-button';
 import IconMenu from 'material-ui/lib/menus/icon-menu';
-import MoreVertIcon from 'material-ui/lib/svg-icons/navigation/more-vert';
+import CloseIcon from 'material-ui/lib/svg-icons/navigation/close';
 import MenuItem from 'material-ui/lib/menus/menu-item';
 import './ChatContainer.scss';
 
@@ -13,18 +13,27 @@ export default class ChatContainer extends React.Component {
       <AppBar
         title={this.props.chat.opponent.name}
         iconElementLeft={
-          <Avatar className="chat-avatar" src={this.props.chat.opponent.picture}/>
+          <Avatar
+            className="chat-avatar"
+            src={this.props.chat.opponent.picture}/>
         }
         iconElementRight={
-          <IconMenu
-            iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
-            targetOrigin={{horizontal: 'right', vertical: 'top'}}
-            anchorOrigin={{horizontal: 'right', vertical: 'top'}}>
-            <MenuItem primaryText="Profile" />
-            <MenuItem primaryText="About" />
-            <MenuItem primaryText="Sign out" />
-          </IconMenu>
-        }/>
+          <IconButton onClick={() => this.props.closeChat(this.props.chat.id)}><CloseIcon/></IconButton>}/>
+
+      <div className="messages-pane">
+        <div className="message">message</div>
+        <div className="message">message</div>
+        <div className="message">message</div>
+        <div className="message">message</div>
+        <div className="message">message</div>
+        <div className="message">message</div>
+        <div className="message">message</div>
+        <div className="message">message</div>
+        <div className="message">message</div>
+      </div>
+      <div className="message-control">
+
+      </div>
     </div>
   }
 }

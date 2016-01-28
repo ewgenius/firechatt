@@ -7,7 +7,7 @@ import CardActions from 'material-ui/lib/card/card-actions';
 import CardHeader from 'material-ui/lib/card/card-header';
 import CardMedia from 'material-ui/lib/card/card-media';
 import CardTitle from 'material-ui/lib/card/card-title';
-import RaisedButton from 'material-ui/lib/raised-button';
+import FlatButton from 'material-ui/lib/flat-button';
 import Shell from './components/Shell/Shell.jsx';
 import api from './lib/firebase.js';
 
@@ -66,7 +66,7 @@ export default class App extends React.Component {
       return <div className='login' style={styles.login}>
         <Card style={styles.loginCard}>
           <CardHeader title={<b>Welcome in Firechatt!</b>}/>
-          <RaisedButton style={styles.loginButton} label="LOGIN" onClick={this.login.bind(this)}/>
+          <FlatButton style={styles.loginButton} label="LOGIN" onClick={this.login.bind(this)}/>
         </Card>
       </div>
   }

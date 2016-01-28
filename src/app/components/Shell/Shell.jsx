@@ -45,6 +45,12 @@ export default class Shell extends React.Component {
     });
   }
 
+  closeChat(chatId) {
+    this.setState({
+      chat: null
+    });
+  }
+
   render() {
     return <div className='shell'>
       <ChatsList
@@ -55,7 +61,8 @@ export default class Shell extends React.Component {
       <MainContainer
         chat={this.state.chat}
         users={this.state.users}
-        openChat={this.openChat.bind(this)} />
+        openChat={this.openChat.bind(this)}
+        closeChat={this.closeChat.bind(this)} />
     </div>
   }
 }
