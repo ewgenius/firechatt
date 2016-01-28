@@ -21,7 +21,7 @@ export default class UsersList extends React.Component {
 
   selectUser(index, id) {
     this.setState({selectedIndex: index});
-    this.props.selectUser(id);
+    this.props.openChat(id);
   }
 
   getUsersList(users) {

@@ -1,5 +1,6 @@
 import React from 'react';
 import ChatContainer from '../ChatContainer/ChatContainer.jsx';
+import UsersList from '../UsersList/UsersList.jsx';
 import './MainContainer.scss';
 
 export default class MainContainer extends React.Component {
@@ -11,10 +12,10 @@ export default class MainContainer extends React.Component {
         messages={this.props.messages}
         closeChat={this.props.closeChat}/>
     else
-      return Object.keys(this.props.users).map((key, i) => <p key={i}>
-        {this.props.users[key].name}
-        <button onClick={(() => this.props.openChat(this.props.users[key].id))}>start chat</button>
-      </p>);
+      return <UsersList
+        users={this.props.users}
+        openChat={this.props.openChat}
+        />
   }
 
   render() {
