@@ -10,7 +10,7 @@ Live demo at [https://firechatt.firebaseapp.com](https://firechatt.firebaseapp.c
 - [x] base layout with material design
 - [x] google auth and user creation
 - [x] api for creating chat between two users
-- [ ] messages api
+- [x] messages api
 - [ ] chat closing logic and events
 - [ ] save profile in localstorage, don't reuire login each time
 - [ ] responsive design for mobile
