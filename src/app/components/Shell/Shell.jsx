@@ -45,14 +45,16 @@ export default class Shell extends React.Component {
     </div>
 */
     return <div className='shell'>
-      {this.props.user.name}
       users:<br/>
       {Object.keys(this.state.users).map((key, i) => <p key={i}>
         {this.state.users[key].name}
         <button onClick={(() => this.openChat(this.state.users[key].id))}>start chat</button>
       </p>)}
+
       chats:<br/>
-    {Object.keys(this.state.chats).map((key, i) => <p key={i}>{this.state.chats[key].id}</p>)}
+      {Object.keys(this.state.chats).map((key, i) => <p key={i}>
+        {this.state.chats[key].opponent.name}
+      </p>)}
     </div>
   }
 }

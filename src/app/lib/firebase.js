@@ -74,12 +74,28 @@ const api = {
         promiseValue(snapshot)
         .then(value => resolve(value))
         .catch(err => reject(err)));
-    }).then(chats => Promise.all(Object.keys(chats).map(id => this.getChat(id).then(chat => {
-      return {
-        id: id,
-        chat: chat
-      }
-    }))));
+    }).then(chats => Promise.all(Object.keys(chats).map(id => this.getChat(id)
+      .then(chat => {
+        return {
+          id: id,
+          chat: chat
+        };
+      })
+      .then(chat => {
+        let opponentId = userId;
+        if (chat.chat.user1 !== userId)
+          opponentId = chat.chat.user1;
+        else if (chat.chat.user2 !== userId)
+          opponentId = chat.chat.user2;
+        return this.getUser(opponentId).then(user => {
+          return {
+            id: chat.id,
+            chat: chat.chat,
+            opponent: user
+          };
+        });
+      })
+    )));
   },
 
   getChat: function(chatId) {
